@@ -12,9 +12,6 @@ contract LPOracleFactory {
     /// @notice Creation code hash for LPOracle contract
     bytes public constant ORACLE_CREATION_CODE = type(LPOracle).creationCode;
 
-    /// @notice Mapping of pool address to deployed oracle address
-    mapping(address pool => address oracle) public getOracle;
-
     /// @notice Emitted when a new oracle is deployed
     event OracleDeployed(address indexed pool, address indexed oracle);
 
@@ -22,12 +19,23 @@ contract LPOracleFactory {
     /// @param pool BCoWPool address
     /// @param feed0 Chainlink USD price feed for pool token at index 0
     /// @param feed1 Chainlink USD price feed for pool token at index 1
-    /// @return The address where the oracle would be deployed
-    function computeOracleAddress(address pool, address feed0, address feed1) public view returns (address) {
-        bytes32 salt = keccak256(abi.encodePacked(pool, feed0, feed1));
+    /// @param nonce Nonce for the deployment
+    /// @return predictedAddress The address where the oracle would be deployed
+    /// @return salt The salt used for the deployment
+    function computeOracleAddress(
+        address pool,
+        address feed0,
+        address feed1,
+        uint32 nonce
+    )
+        public
+        view
+        returns (address predictedAddress, bytes32 salt)
+    {
+        salt = keccak256(abi.encodePacked(pool, feed0, feed1, nonce));
         bytes memory bytecode = abi.encodePacked(ORACLE_CREATION_CODE, abi.encode(pool, feed0, feed1));
 
-        return address(
+        predictedAddress = address(
             uint160(
                 uint256(
                     keccak256(
@@ -47,15 +55,15 @@ contract LPOracleFactory {
     /// @param pool BCoWPool address
     /// @param feed0 Chainlink USD price feed for pool token at index 0
     /// @param feed1 Chainlink USD price feed for pool token at index 1
+    /// @param nonce Nonce for the deployment
     /// @return oracle Address of the newly deployed oracle
-    function deployOracle(address pool, address feed0, address feed1) external returns (address oracle) {
-        if (getOracle[pool] != address(0)) revert OracleAlreadyExists();
+    function deployOracle(address pool, address feed0, address feed1, uint32 nonce) external returns (address oracle) {
+        (address oracleAddress, bytes32 salt) = computeOracleAddress(pool, feed0, feed1, nonce);
 
-        bytes32 salt = keccak256(abi.encodePacked(pool, feed0, feed1));
+        // Check if there's already code at this address
+        if (oracleAddress.code.length > 0) revert OracleAlreadyExists();
+
         oracle = address(new LPOracle{ salt: salt }(pool, feed0, feed1));
-
-        if (oracle == address(0)) revert DeployFailed();
-        getOracle[pool] = oracle;
 
         emit OracleDeployed(pool, oracle);
     }
