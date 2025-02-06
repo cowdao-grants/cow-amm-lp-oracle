@@ -46,7 +46,7 @@ contract ForkTest is Addresses, BaseTest {
 
         // Deploy contracts to the fork.
         factory = new LPOracleFactory();
-        lpOracle = LPOracle(factory.deployOracle(address(FORK_POOL), address(FORK_FEED0), address(FORK_FEED1)));
+        lpOracle = LPOracle(factory.deployOracle(address(FORK_POOL), address(FORK_FEED0), address(FORK_FEED1), 0));
 
         // Label contracts.
         labelContracts();

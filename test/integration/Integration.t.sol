@@ -79,7 +79,7 @@ contract IntegrationTest is Addresses, BaseTest {
 
         // Deploy contracts to the fork.
         factory = new LPOracleFactory();
-        lpOracle = LPOracle(factory.deployOracle(_pool, _feed0, _feed1));
+        lpOracle = LPOracle(factory.deployOracle(_pool, _feed0, _feed1, 0));
         aaveLPOracle = new AaveLPOracle(address(lpOracle));
 
         // Aave contracts
