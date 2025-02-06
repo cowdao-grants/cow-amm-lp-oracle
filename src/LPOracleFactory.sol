@@ -19,20 +19,18 @@ contract LPOracleFactory {
     /// @param pool BCoWPool address
     /// @param feed0 Chainlink USD price feed for pool token at index 0
     /// @param feed1 Chainlink USD price feed for pool token at index 1
-    /// @param nonce Nonce for the deployment
     /// @return predictedAddress The address where the oracle would be deployed
     /// @return salt The salt used for the deployment
     function computeOracleAddress(
         address pool,
         address feed0,
-        address feed1,
-        uint32 nonce
+        address feed1
     )
         public
         view
         returns (address predictedAddress, bytes32 salt)
     {
-        salt = keccak256(abi.encodePacked(pool, feed0, feed1, nonce));
+        salt = keccak256(abi.encodePacked(pool, feed0, feed1));
         bytes memory bytecode = abi.encodePacked(ORACLE_CREATION_CODE, abi.encode(pool, feed0, feed1));
 
         predictedAddress = address(
@@ -55,10 +53,9 @@ contract LPOracleFactory {
     /// @param pool BCoWPool address
     /// @param feed0 Chainlink USD price feed for pool token at index 0
     /// @param feed1 Chainlink USD price feed for pool token at index 1
-    /// @param nonce Nonce for the deployment
     /// @return oracle Address of the newly deployed oracle
-    function deployOracle(address pool, address feed0, address feed1, uint32 nonce) external returns (address oracle) {
-        (address oracleAddress, bytes32 salt) = computeOracleAddress(pool, feed0, feed1, nonce);
+    function deployOracle(address pool, address feed0, address feed1) external returns (address oracle) {
+        (address oracleAddress, bytes32 salt) = computeOracleAddress(pool, feed0, feed1);
 
         // Check if there's already code at this address
         if (oracleAddress.code.length > 0) revert OracleAlreadyExists();

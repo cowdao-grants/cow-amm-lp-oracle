@@ -28,13 +28,13 @@ contract OracleFactoryBenchmark is BaseTest {
     function _benchmarkFactory(LPOracleFactory _factory) private returns (BenchmarkResult memory) {
         vm.record();
         uint256 gasStart = gasleft();
-        _factory.deployOracle(mocks.pool, mocks.feed0, mocks.feed1, 0);
+        _factory.deployOracle(mocks.pool, mocks.feed0, mocks.feed1);
         uint256 gasUsed = gasStart - gasleft();
 
         (bytes32[] memory reads, bytes32[] memory writes) = vm.accesses(address(factory));
 
         uint256 gasStart2 = gasleft();
-        _factory.computeOracleAddress(mocks.pool, mocks.feed0, mocks.feed1, 0);
+        _factory.computeOracleAddress(mocks.pool, mocks.feed0, mocks.feed1);
         uint256 gasUsed2 = gasStart2 - gasleft();
         return BenchmarkResult({
             gasUsedDeploy: gasUsed,
@@ -60,16 +60,16 @@ contract OracleFactoryBenchmark is BaseTest {
 
     function test_Benchmark_VerifyAddressConsistency() public {
         // Deploy oracles
-        address oracle = factory.deployOracle(mocks.pool, mocks.feed0, mocks.feed1, 0);
+        address oracle = factory.deployOracle(mocks.pool, mocks.feed0, mocks.feed1);
 
         // Verify computed addresses match deployed addresses
-        (address predicted,) = factory.computeOracleAddress(mocks.pool, mocks.feed0, mocks.feed1, 0);
+        (address predicted,) = factory.computeOracleAddress(mocks.pool, mocks.feed0, mocks.feed1);
         assertEq(predicted, oracle, "Factory computeOracleAddress");
     }
 
     function test_DeployedOracleIsValid() public {
         // Deploy oracle
-        address oracleAddr = factory.deployOracle(mocks.pool, mocks.feed0, mocks.feed1, 0);
+        address oracleAddr = factory.deployOracle(mocks.pool, mocks.feed0, mocks.feed1);
 
         // Verify oracle was deployed successfully
         assertTrue(oracleAddr != address(0), "Oracle not deployed");
@@ -85,10 +85,10 @@ contract OracleFactoryBenchmark is BaseTest {
 
     function test_CannotDeployDuplicateOracle() public {
         // Deploy first oracle
-        factory.deployOracle(mocks.pool, mocks.feed0, mocks.feed1, 0);
+        factory.deployOracle(mocks.pool, mocks.feed0, mocks.feed1);
 
         // Attempt to deploy second oracle for same pool
         vm.expectRevert(abi.encodeWithSignature("OracleAlreadyExists()"));
-        factory.deployOracle(mocks.pool, mocks.feed0, mocks.feed1, 0);
+        factory.deployOracle(mocks.pool, mocks.feed0, mocks.feed1);
     }
 }
