@@ -15,6 +15,7 @@ contract CalculateTVL_Concrete_Unit_Test is BaseTest {
     * Line 164: k = wadMul(wadPow(wadDiv(balance0, balance1), WEIGHT0), balance1)
     */
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_ShouldRevert_InvariantK_Balance0TooLarge() external {
         int256 balance0 = (type(int256).max / 1e18) + 1;
         int256 balance1 = 3000e18;
@@ -26,12 +27,14 @@ contract CalculateTVL_Concrete_Unit_Test is BaseTest {
         _;
     }
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_ShouldRevert_InvariantK_Balance1Zero() external whenValidBalance0 {
         int256 balance0 = 1e18;
         vm.expectRevert();
         wadDiv(balance0, 0);
     }
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_ShouldRevert_InvariantK_Balance1Negative() external whenValidBalance0 {
         int256 balance0 = 1e18;
         int256 balance1 = -1;
@@ -40,6 +43,7 @@ contract CalculateTVL_Concrete_Unit_Test is BaseTest {
         wadPow(wadDiv(balance0, balance1), weight0);
     }
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_ShouldRevert_InvariantK_Balance1LargeRelativeBalance0() external whenValidBalance0 {
         int256 balance0 = 1e18;
         int256 balance1 = balance0 * 1e18 + 1;
@@ -55,6 +59,7 @@ contract CalculateTVL_Concrete_Unit_Test is BaseTest {
         _;
     }
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_ShouldRevert_InvariantK_WadMulOverflows() external whenValidBalance0 whenValidBalance1 {
         // Set max values
         int256 balance0 = (type(int256).max / 1e18);
@@ -79,11 +84,13 @@ contract CalculateTVL_Concrete_Unit_Test is BaseTest {
     * Line 171: tvl = wadMul(wadMul(wadMul(k, pxComponent), pyComponent), weightFactor)
     */
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_ShouldRevert_TVL_AnswerZero() external {
         vm.expectRevert("UNDEFINED");
         wadPow(0, 0.5e18);
     }
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_ShouldRevert_TVL_AnswerNegative() external {
         vm.expectRevert("UNDEFINED");
         wadPow(-1, 0.5e18);
@@ -104,6 +111,7 @@ contract CalculateTVL_Concrete_Unit_Test is BaseTest {
     // Let b0 = 1000e18 & b1 = 1e16: k = 3.16
     // Now, let b1 = 1e18: k = 31.6
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function test_ShouldRevert_TVL_WadMulsLeadToOverflow()
         external
         whenValidBalance0
