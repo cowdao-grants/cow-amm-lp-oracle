@@ -83,7 +83,7 @@ jobs:
           )" >> $GITHUB_ENV
 
       - name: "Run the tests"
-        run: "forge test"
+        run: "forge test --no-match-path 'test/fork/additional-pools/**'"
 
       - name: "Add test summary"
         run: |

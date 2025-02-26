@@ -11,6 +11,7 @@ contract CalculateTVL_Fuzz_Unit_Test is BaseTest {
 
     // int256 k = wadMul(wadPow(wadDiv(balance0, balance1), WEIGHT0), balance1);
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function testFuzz_Token0BalanceTooLarge(int256 balance0) external {
         balance0 = bound(balance0, type(int256).max / 1e18 + 1, type(int256).max);
         int256 balance1 = 3000e18;
