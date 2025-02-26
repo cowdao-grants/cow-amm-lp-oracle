@@ -161,7 +161,7 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
 
         // Implemented assertions
         // Expected LP token USD price = (1 * 3000 + 3000 * 1) / 1000 = $6/token === 6e8
-        assertApproxEqRel(answer, 6e8, 1e10); // 100% == 1e18
+        assertApproxEqRel(answer, 6e18, 1e10); // 100% == 1e18
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
@@ -194,7 +194,7 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
 
         // Implemented assertions
         // Expected LP token USD price = (1 * 3000 + 750 * 1) / 1000 = $3.75/token === 3.75e8
-        assertApproxEqRel(answer, 3.75e8, 1e10); // 100% == 1e18
+        assertApproxEqRel(answer, 3.75e18, 1e10); // 100% == 1e18
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
@@ -228,9 +228,15 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         setLatestRoundDataMocks(defaults.ANSWER0(), defaults.ANSWER1(), token0PoolReserve, token1PoolReserve);
 
         // naivePrice ≈ $30.3 / LP token == 30.3e8 == (0.1 * 3000 + 30000 * 1)
-        uint256 naivePrice = (
-            token0PoolReserve * uint256(defaults.ANSWER0()) + token1PoolReserve * uint256(defaults.ANSWER1())
-        ) / defaults.LP_TOKEN_SUPPLY();
+        uint256 naivePrice = calculateNaivePrice(
+            defaults.FEED_DECIMALS(),
+            defaults.FEED_DECIMALS(),
+            defaults.ANSWER0(),
+            defaults.ANSWER1(),
+            token0PoolReserve,
+            token1PoolReserve,
+            defaults.LP_TOKEN_SUPPLY()
+        );
 
         // LP price
         (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound) =
@@ -242,8 +248,8 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(answeredInRound, 0, "answeredInRound");
 
         // The naive LP token price is approx. 5x times higher than balanced pool price.
-        assertApproxEqRel(naivePrice, 30.3e8, 1e10); // 100% == 1e18
-        assertApproxEqRel(uint256(answer), 6e8, 1e10);
+        assertApproxEqRel(naivePrice, 30.3e18, 1e10); // 100% == 1e18
+        assertApproxEqRel(uint256(answer), 6e18, 1e10);
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
@@ -273,9 +279,15 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         setLatestRoundDataMocks(defaults.ANSWER0(), defaults.ANSWER1(), token0PoolReserve, token1PoolReserve);
 
         // naivePrice ≈ $30.3 / LP token == 30.3e8 == (10 * 3000 + 300 * 1)
-        uint256 naivePrice = (
-            token0PoolReserve * uint256(defaults.ANSWER0()) + token1PoolReserve * uint256(defaults.ANSWER1())
-        ) / defaults.LP_TOKEN_SUPPLY();
+        uint256 naivePrice = calculateNaivePrice(
+            defaults.FEED_DECIMALS(),
+            defaults.FEED_DECIMALS(),
+            defaults.ANSWER0(),
+            defaults.ANSWER1(),
+            token0PoolReserve,
+            token1PoolReserve,
+            defaults.LP_TOKEN_SUPPLY()
+        );
 
         // LP price
         (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound) =
@@ -287,8 +299,8 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(answeredInRound, 0, "answeredInRound");
 
         // The naive LP token price is approx. 5x times higher than balanced pool price.
-        assertApproxEqRel(naivePrice, 30.3e8, 1e10); // 100% == 1e18
-        assertApproxEqRel(uint256(answer), 6e8, 1e10);
+        assertApproxEqRel(naivePrice, 30.3e18, 1e10); // 100% == 1e18
+        assertApproxEqRel(uint256(answer), 6e18, 1e10);
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
@@ -323,9 +335,15 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         setLatestRoundDataMocks(defaults.ANSWER0(), defaults.ANSWER1(), token0PoolReserve, token1PoolReserve);
 
         // NaivePrice: 0.5 * 3000 + 12000 * 1 = 13.5e8 == $13.5/lp token
-        uint256 naivePrice = (
-            token0PoolReserve * uint256(defaults.ANSWER0()) + token1PoolReserve * uint256(defaults.ANSWER1())
-        ) / defaults.LP_TOKEN_SUPPLY();
+        uint256 naivePrice = calculateNaivePrice(
+            defaults.FEED_DECIMALS(),
+            defaults.FEED_DECIMALS(),
+            defaults.ANSWER0(),
+            defaults.ANSWER1(),
+            token0PoolReserve,
+            token1PoolReserve,
+            defaults.LP_TOKEN_SUPPLY()
+        );
 
         // LP price
         (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound) =
@@ -337,8 +355,8 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(answeredInRound, 0, "answeredInRound");
 
         // The naive LP token price is approx 3.6x higher.
-        assertApproxEqRel(naivePrice, 13.5e8, 1e10); // 100% == 1e18
-        assertApproxEqRel(uint256(answer), 3.75e8, 1e10);
+        assertApproxEqRel(naivePrice, 13.5e18, 1e10); // 100% == 1e18
+        assertApproxEqRel(uint256(answer), 3.75e18, 1e10);
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
@@ -373,9 +391,15 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         setLatestRoundDataMocks(defaults.ANSWER0(), defaults.ANSWER1(), token0PoolReserve, token1PoolReserve);
 
         // NaivePrice: 1.11 * 3000 + 500 * 1 = 3.83e8 == $3.83/lp token
-        uint256 naivePrice = (
-            token0PoolReserve * uint256(defaults.ANSWER0()) + token1PoolReserve * uint256(defaults.ANSWER1())
-        ) / defaults.LP_TOKEN_SUPPLY();
+        uint256 naivePrice = calculateNaivePrice(
+            defaults.FEED_DECIMALS(),
+            defaults.FEED_DECIMALS(),
+            defaults.ANSWER0(),
+            defaults.ANSWER1(),
+            token0PoolReserve,
+            token1PoolReserve,
+            defaults.LP_TOKEN_SUPPLY()
+        );
 
         // LP price
         (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound) =
@@ -386,8 +410,8 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(startedAt, 0, "startedAt");
         assertEq(answeredInRound, 0, "answeredInRound");
 
-        assertApproxEqRel(naivePrice, 3.83e8, 3e15); // within 0.3%
-        assertApproxEqRel(uint256(answer), 3.75e8, 1e10);
+        assertApproxEqRel(naivePrice, 3.83e18, 3e15); // within 0.3%
+        assertApproxEqRel(uint256(answer), 3.75e18, 1e10);
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
