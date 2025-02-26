@@ -58,14 +58,10 @@ contract Calculations {
         pure
         returns (uint256)
     {
-        if (feed0Decimals == feed1Decimals) {
-            return (token0Balance * uint256(answer0) + token1Balance * uint256(answer1)) / lpSupply;
-        } else {
-            return (
-                token0Balance * uint256(answer0) * 10 ** (18 - feed0Decimals)
-                    + token1Balance * uint256(answer1) * 10 ** (18 - feed1Decimals)
-            ) / lpSupply;
-        }
+        return (
+            token0Balance * uint256(answer0) * 10 ** (18 - feed0Decimals)
+                + token1Balance * uint256(answer1) * 10 ** (18 - feed1Decimals)
+        ) / lpSupply;
     }
 
     /// @dev Helper function that calculates the pool token 0 balance given:
