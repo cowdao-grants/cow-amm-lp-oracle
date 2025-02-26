@@ -12,8 +12,10 @@ contract AaveLPOracle {
         lpOracle = LPOracle(_lpOracle);
     }
 
+    /// @dev Returns an answer for LP token price with 8 decimals.
+    /// Consistent with all USD oracles used in Aave V3.
     function latestAnswer() external view returns (int256) {
         (, int256 answer,,,) = lpOracle.latestRoundData();
-        return answer;
+        return answer / 1e10;
     }
 }
