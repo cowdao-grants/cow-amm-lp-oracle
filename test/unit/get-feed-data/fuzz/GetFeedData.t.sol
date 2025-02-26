@@ -56,7 +56,7 @@ contract GetFeedData_Fuzz_Unit_Test is BaseTest {
     {
         // Bounds
         decimals = boundUint8(decimals, 0, 18);
-        int256 adjustBy = int256(10 ** decimals);
+        int256 adjustBy = int256(10 ** 18);
         int256 min = type(int256).min / adjustBy;
         int256 max = type(int256).max / adjustBy;
         answer0 = bound(answer0, min, max);
@@ -74,8 +74,8 @@ contract GetFeedData_Fuzz_Unit_Test is BaseTest {
         (int256 price0, int256 price1, uint256 updatedAt) = oracle.exposed_getFeedData();
 
         // Assertions
-        assertEq(price0, answer0, "price0");
-        assertEq(price1, answer1, "price1");
+        assertEq(price0, answer0 * int256(10 ** (18 - decimals)), "price0");
+        assertEq(price1, answer1 * int256(10 ** (18 - decimals)), "price1");
         assertEq(updatedAt, updatedAt0, "updatedAt");
     }
 
