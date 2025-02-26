@@ -128,7 +128,7 @@ contract LPOracle is AggregatorV3Interface {
     |*  # INTERNAL HELPERS                                      *|
     |*----------------------------------------------------------*/
 
-    /// @notice Retrieves latest price data from Chainlink feeds and adjusts for decimals.
+    /// @notice Retrieves latest price data from Chainlink feeds and normalise answers to 18 decimals.
     /// @return answer0 Price feed answer for token 0.
     /// @return answer1 Price feed answer for token 1.
     /// @return updatedAt The timestamp of the feed with the oldest price udpate.
@@ -144,13 +144,7 @@ contract LPOracle is AggregatorV3Interface {
         uint8 feed0Decimals = FEED0.decimals();
         uint8 feed1Decimals = FEED1.decimals();
 
-        if (feed0Decimals == feed1Decimals) {
-            return (answer0_, answer1_, updatedAt);
-        } else {
-            return (
-                answer0_ * int256(10 ** (18 - feed0Decimals)), answer1_ * int256(10 ** (18 - feed1Decimals)), updatedAt
-            );
-        }
+        return (answer0_ * int256(10 ** (18 - feed0Decimals)), answer1_ * int256(10 ** (18 - feed1Decimals)), updatedAt);
     }
 
     /// @notice Calculates pool TVL post rebalancing trade with external token prices
