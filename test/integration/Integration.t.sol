@@ -249,7 +249,7 @@ contract IntegrationTest is Addresses, BaseTest {
         // Assertions
         // Don't repay, gain: totalDebtBase - totalCollateralBase
         // Approx. 103k in this scenario
-        assertGt(totalDebtBase, totalCollateralBase, "this one");
+        assertGt(totalDebtBase, totalCollateralBase);
     }
 
     function test_LPOracle_ManipulatePool_TooMuchToken0_BorrowAgainstInflatedLPTokens() external {
