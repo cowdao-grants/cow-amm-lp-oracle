@@ -79,10 +79,9 @@ contract LPOracle is AggregatorV3Interface {
     |*  # AGGREGATOR V3 INTERFACE REQUIREMENTS                  *|
     |*----------------------------------------------------------*/
 
-    /// @notice Returns the number of decimals used.
+    /// @notice Returns the number of decimals the answer uses.
     function decimals() external view returns (uint8) {
-        uint8 feed0Decimals = FEED0.decimals();
-        return feed0Decimals == FEED1.decimals() ? feed0Decimals : 18;
+        return 18;
     }
 
     /// @notice Returns the oracle version.
