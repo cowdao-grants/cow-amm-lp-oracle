@@ -121,6 +121,7 @@ contract LatestRoundData_Fuzz_Unit_Test is BaseTest {
         (, int256 answer,,,) = oracle.latestRoundData();
 
         // Assertions
+        assertEq(oracle.decimals(), 18);
         // For a balanced pool, `naivePrice` and oracle answer should be the same
         assertApproxEqRel(uint256(answer), naivePrice, 1e15); // 100% == 1e18
         assertGt(uint256(answer), 0);

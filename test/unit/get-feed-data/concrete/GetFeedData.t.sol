@@ -55,8 +55,8 @@ contract GetFeedData_Concrete_Unit_Test is BaseTest {
         (int256 price0, int256 price1, uint256 updatedAt) = oracle.exposed_getFeedData();
 
         // Assertions
-        assertEq(price0, 3000e8, "price0");
-        assertEq(price1, 1e8, "price1");
+        assertEq(price0, 3000e18, "price0");
+        assertEq(price1, 1e18, "price1");
         assertEq(updatedAt, block.timestamp - 1, "updatedAt");
     }
 
@@ -77,8 +77,8 @@ contract GetFeedData_Concrete_Unit_Test is BaseTest {
         (int256 price0, int256 price1, uint256 updatedAt) = oracle.exposed_getFeedData();
 
         // Assertions
-        assertEq(price0, 3000e8, "price0");
-        assertEq(price1, 1e8, "price1");
+        assertEq(price0, 3000e18, "price0");
+        assertEq(price1, 1e18, "price1");
         assertEq(updatedAt, block.timestamp - 10, "updatedAt");
     }
 

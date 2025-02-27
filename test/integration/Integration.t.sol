@@ -171,6 +171,7 @@ contract IntegrationTest is Addresses, BaseTest {
 
     function test_AaveOracle_GetAssetPrice() external {
         (, int256 answer,,,) = lpOracle.latestRoundData();
+        answer = answer / 1e10; // adjust answer to 8 decimals for Aave V3 integration test
         uint256 price = aaveOracle.getAssetPrice(address(POOL_WETH_UNI));
         assertEq(uint256(answer), price);
     }
@@ -202,6 +203,7 @@ contract IntegrationTest is Addresses, BaseTest {
             INITIAL_POOL_TOKEN1_BALANCE - token1AmountOut,
             POOL_WETH_UNI.totalSupply()
         );
+        naivePrice = naivePrice / 1e10; // adjust output to 8 decimal basis
         vm.mockCall(
             address(aaveOracle),
             abi.encodeWithSignature("getAssetPrice(address)", address(POOL_WETH_UNI)),
@@ -234,6 +236,7 @@ contract IntegrationTest is Addresses, BaseTest {
             INITIAL_POOL_TOKEN1_BALANCE,
             POOL_WETH_UNI.totalSupply()
         );
+        naivePrice = naivePrice / 1e10; // adjust output to 8 decimal basis
         vm.mockCall(
             address(aaveOracle),
             abi.encodeWithSignature("getAssetPrice(address)", address(POOL_WETH_UNI)),
@@ -321,7 +324,6 @@ contract IntegrationTest is Addresses, BaseTest {
         (uint256 totalCollateralBase, uint256 totalDebtBase,,,, uint256 healthFactor) = pool.getUserAccountData(USER);
 
         // Assertions
-        // Collateral base, debt base and health factors should be the same
         assertEq(totalCollateralBase, totalCollateralBaseBefore, "totalCollateralBase");
         assertEq(totalDebtBase, totalDebtBaseBefore, "totalDebtBase");
         assertEq(healthFactor, healthFactorBefore, "healthFactor");
