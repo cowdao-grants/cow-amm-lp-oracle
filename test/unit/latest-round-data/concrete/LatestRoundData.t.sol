@@ -160,8 +160,9 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(answeredInRound, 0, "answeredInRound");
 
         // Implemented assertions
-        // Expected LP token USD price = (1 * 3000 + 3000 * 1) / 1000 = $6/token === 6e8
-        assertApproxEqRel(answer, 6e18, 1e10); // 100% == 1e18
+        assertEq(oracle.decimals(), 18);
+        // Expected LP token USD price = (1 * 3000 + 3000 * 1) / 1000 = $6/token === 6e18
+        assertApproxEqRel(answer, 6 * 10 ** 18, 1e10); // 100% == 1e18
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
@@ -193,8 +194,9 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(answeredInRound, 0, "answeredInRound");
 
         // Implemented assertions
-        // Expected LP token USD price = (1 * 3000 + 750 * 1) / 1000 = $3.75/token === 3.75e8
-        assertApproxEqRel(answer, 3.75e18, 1e10); // 100% == 1e18
+        assertEq(oracle.decimals(), 18);
+        // Expected LP token USD price = (1 * 3000 + 750 * 1) / 1000 = $3.75/token === 3.75e18
+        assertApproxEqRel(answer, 3.75 * 10 ** 18, 1e10); // 100% == 1e18
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
@@ -246,10 +248,10 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(roundId, 0, "roundId");
         assertEq(startedAt, 0, "startedAt");
         assertEq(answeredInRound, 0, "answeredInRound");
-
+        assertEq(oracle.decimals(), 18);
         // The naive LP token price is approx. 5x times higher than balanced pool price.
-        assertApproxEqRel(naivePrice, 30.3e18, 1e10); // 100% == 1e18
-        assertApproxEqRel(uint256(answer), 6e18, 1e10);
+        assertApproxEqRel(naivePrice, 30.3 * 10 ** 18, 1e10); // 100% == 1e18
+        assertApproxEqRel(uint256(answer), 6 * 10 ** 18, 1e10);
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
@@ -297,10 +299,10 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(roundId, 0, "roundId");
         assertEq(startedAt, 0, "startedAt");
         assertEq(answeredInRound, 0, "answeredInRound");
-
+        assertEq(oracle.decimals(), 18);
         // The naive LP token price is approx. 5x times higher than balanced pool price.
-        assertApproxEqRel(naivePrice, 30.3e18, 1e10); // 100% == 1e18
-        assertApproxEqRel(uint256(answer), 6e18, 1e10);
+        assertApproxEqRel(naivePrice, 30.3 * 10 ** 18, 1e10); // 100% == 1e18
+        assertApproxEqRel(uint256(answer), 6 * 10 ** 18, 1e10);
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
@@ -353,10 +355,10 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(roundId, 0, "roundId");
         assertEq(startedAt, 0, "startedAt");
         assertEq(answeredInRound, 0, "answeredInRound");
-
+        assertEq(oracle.decimals(), 18);
         // The naive LP token price is approx 3.6x higher.
-        assertApproxEqRel(naivePrice, 13.5e18, 1e10); // 100% == 1e18
-        assertApproxEqRel(uint256(answer), 3.75e18, 1e10);
+        assertApproxEqRel(naivePrice, 13.5 * 10 ** 18, 1e10); // 100% == 1e18
+        assertApproxEqRel(uint256(answer), 3.75 * 10 ** 18, 1e10);
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
@@ -409,9 +411,9 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(roundId, 0, "roundId");
         assertEq(startedAt, 0, "startedAt");
         assertEq(answeredInRound, 0, "answeredInRound");
-
-        assertApproxEqRel(naivePrice, 3.83e18, 3e15); // within 0.3%
-        assertApproxEqRel(uint256(answer), 3.75e18, 1e10);
+        assertEq(oracle.decimals(), 18);
+        assertApproxEqRel(naivePrice, 3.83 * 10 ** 18, 3e15); // within 0.3%
+        assertApproxEqRel(uint256(answer), 3.75 * 10 ** 18, 1e10);
         assertEq(updatedAt, block.timestamp, "updatedAt");
     }
 
@@ -454,9 +456,9 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(roundId, 0, "roundId");
         assertEq(startedAt, 0, "startedAt");
         assertEq(answeredInRound, 0, "answeredInRound");
-
+        assertEq(oracle.decimals(), 18);
         // Expected LP token USD price = (1 * 3000 + 3000 * 1) / 1000 = $6/token
-        assertApproxEqRel(answer, 6e18, 1e10); // 100% == 1e18
+        assertApproxEqRel(answer, 6 * 10 ** 18, 1e10); // 100% == 1e18
         assertEq(updatedAt, defaults.DEC_1_2024(), "updatedAt");
     }
 
@@ -498,9 +500,9 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(roundId, 0, "roundId");
         assertEq(startedAt, 0, "startedAt");
         assertEq(answeredInRound, 0, "answeredInRound");
-
+        assertEq(oracle.decimals(), 18);
         // Expected LP token USD price = (1 * 3000 + 750 * 1) / 1000 = $3.75/token
-        assertApproxEqRel(answer, 3.75e18, 1e10); // 100% == 1e18
+        assertApproxEqRel(answer, 3.75 * 10 ** 18, 1e10); // 100% == 1e18
         assertEq(updatedAt, defaults.DEC_1_2024(), "updatedAt");
     }
 
@@ -554,10 +556,10 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(roundId, 0, "roundId");
         assertEq(startedAt, 0, "startedAt");
         assertEq(answeredInRound, 0, "answeredInRound");
-
+        assertEq(oracle.decimals(), 18);
         // The naive LP token price is approx. 5x times higher than balanced pool price.
-        assertApproxEqRel(naivePrice, 30.3e18, 1e10); // 100% == 1e18
-        assertApproxEqRel(uint256(answer), 6e18, 1e10);
+        assertApproxEqRel(naivePrice, 30.3 * 10 ** 18, 1e10); // 100% == 1e18
+        assertApproxEqRel(uint256(answer), 6 * 10 ** 18, 1e10);
         assertEq(updatedAt, defaults.DEC_1_2024(), "updatedAt");
     }
 
@@ -611,10 +613,10 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(roundId, 0, "roundId");
         assertEq(startedAt, 0, "startedAt");
         assertEq(answeredInRound, 0, "answeredInRound");
-
+        assertEq(oracle.decimals(), 18);
         // The naive LP token price is approx. 5x times higher than balanced pool price.
-        assertApproxEqRel(naivePrice, 30.3e18, 1e10); // 100% == 1e18
-        assertApproxEqRel(uint256(answer), 6e18, 1e10);
+        assertApproxEqRel(naivePrice, 30.3 * 10 ** 18, 1e10); // 100% == 1e18
+        assertApproxEqRel(uint256(answer), 6 * 10 ** 18, 1e10);
         assertEq(updatedAt, defaults.DEC_1_2024(), "updatedAt");
     }
 
@@ -673,10 +675,10 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(roundId, 0, "roundId");
         assertEq(startedAt, 0, "startedAt");
         assertEq(answeredInRound, 0, "answeredInRound");
-
+        assertEq(oracle.decimals(), 18);
         // The naive LP token price is approx 3.6x higher.
-        assertApproxEqRel(naivePrice, 13.5e18, 1e10); // 100% == 1e18
-        assertApproxEqRel(uint256(answer), 3.75e18, 1e10);
+        assertApproxEqRel(naivePrice, 13.5 * 10 ** 18, 1e10); // 100% == 1e18
+        assertApproxEqRel(uint256(answer), 3.75 * 10 ** 18, 1e10);
         assertEq(updatedAt, defaults.DEC_1_2024(), "updatedAt");
     }
 
@@ -735,9 +737,9 @@ contract LatestRoundData_Concrete_Unit_Test is BaseTest {
         assertEq(roundId, 0, "roundId");
         assertEq(startedAt, 0, "startedAt");
         assertEq(answeredInRound, 0, "answeredInRound");
-
-        assertApproxEqRel(naivePrice, 3.83e18, 3e15); // within 0.3%
-        assertApproxEqRel(uint256(answer), 3.75e18, 1e10);
+        assertEq(oracle.decimals(), 18);
+        assertApproxEqRel(naivePrice, 3.83 * 10 ** 18, 3e15); // within 0.3%
+        assertApproxEqRel(uint256(answer), 3.75 * 10 ** 18, 1e10);
         assertEq(updatedAt, defaults.DEC_1_2024(), "updatedAt");
     }
 }
